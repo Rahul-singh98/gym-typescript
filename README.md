@@ -1,30 +1,92 @@
-# React + TypeScript + Vite
+# Gym TypeScript Project
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+This project is a comprehensive setup for developing a web application using React, TypeScript, and Vite. The setup includes configurations for ESLint, Docker, Tailwind CSS, and Nginx, providing a robust foundation for building scalable and maintainable applications.
 
-Currently, two official plugins are available:
+## Features
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- **React**: A JavaScript library for building user interfaces.
+- **TypeScript**: A strongly typed programming language that builds on JavaScript.
+- **Vite**: A fast build tool and development server.
+- **ESLint**: A tool for identifying and reporting on patterns in JavaScript.
+- **Docker**: A platform for developing, shipping, and running applications.
+- **Tailwind CSS**: A utility-first CSS framework.
+- **Nginx**: A high-performance web server.
 
-## Expanding the ESLint configuration
+## Project Structure
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
-
-- Configure the top-level `parserOptions` property like this:
-
-```js
-export default {
-  // other rules...
-  parserOptions: {
-    ecmaVersion: 'latest',
-    sourceType: 'module',
-    project: ['./tsconfig.json', './tsconfig.node.json', './tsconfig.app.json'],
-    tsconfigRootDir: __dirname,
-  },
-}
+```raw
+gym-typescript/
+├── public/
+├── src/
+├── .eslintrc.cjs
+├── .gitignore
+├── Dockerfile
+├── README.md
+├── index.html
+├── nginx.conf
+├── package-lock.json
+├── package.json
+├── postcss.config.cjs
+├── tailwind.config.js
+├── tsconfig.app.json
+├── tsconfig.json
+├── tsconfig.node.json
+├── vite.config.ts
 ```
 
-- Replace `plugin:@typescript-eslint/recommended` to `plugin:@typescript-eslint/recommended-type-checked` or `plugin:@typescript-eslint/strict-type-checked`
-- Optionally add `plugin:@typescript-eslint/stylistic-type-checked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and add `plugin:react/recommended` & `plugin:react/jsx-runtime` to the `extends` list
+- **public/**: Contains public assets.
+- **src/**: Contains the source code of the application.
+- **Dockerfile**: Configuration file for Docker.
+- **nginx.conf**: Configuration file for Nginx.
+- **tailwind.config.js**: Configuration file for Tailwind CSS.
+- **tsconfig.json**: TypeScript configuration files.
+- **vite.config.ts**: Configuration file for Vite.
+
+## Setup and Installation
+
+1. Clone the repository:
+   ```sh
+   git clone https://github.com/Rahul-singh98/gym-typescript.git
+   ```
+2. Navigate to the project directory:
+   ```sh
+   cd gym-typescript
+   ```
+3. Install dependencies:
+   ```sh
+   npm install
+   ```
+4. Start the development server:
+   ```sh
+   npm run dev
+   ```
+
+## Docker Setup
+
+To run the application in a Docker container:
+
+1. Build the Docker image:
+   ```sh
+   docker build -t gym-typescript .
+   ```
+2. Run the Docker container:
+   ```sh
+   docker run -p 80:80 gym-typescript
+   ```
+
+## ESLint Configuration
+
+The project includes a minimal ESLint setup with some recommended rules. To expand the ESLint configuration for a production application, consider updating the `parserOptions` and `extends` properties in the `.eslintrc.cjs` file.
+
+## Running Images
+
+(Include images or screenshots here)
+
+## License
+
+This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
+
+```
+
+Feel free to customize this draft as per your project's specific details and add any additional information or images as needed.
+```
