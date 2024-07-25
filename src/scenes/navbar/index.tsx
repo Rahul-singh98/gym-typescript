@@ -5,18 +5,60 @@ import useMediaQuery from "@/hooks/userMediaQuery";
 import { Bars3Icon, XMarkIcon } from "@heroicons/react/16/solid";
 import { useState } from "react";
 import ActionButton from "@/shared/ActionButton";
+import Modal from "./Modal";
+import SignIn from "./SignIn";
 
 type Props = {
   isTopOfPage: boolean;
   selectedPage: SelectedPage;
   setSelectedPage: (value: SelectedPage) => void;
+  isUserSignedIn: boolean;
+  setIsUserSignedIn: (value: boolean) => void;
 };
 
-const Navbar = ({ isTopOfPage, selectedPage, setSelectedPage }: Props) => {
+const Navbar = ({
+  isTopOfPage,
+  selectedPage,
+  setSelectedPage,
+  isUserSignedIn,
+  setIsUserSignedIn,
+}: Props) => {
   const flexBetween = "flex items-center justify-between";
   const [isMenuToggled, setIsMenuToggled] = useState<boolean>(false);
+  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const isAboveMediumScreens = useMediaQuery("(min-width: 1060px)");
   const navbarBackground = isTopOfPage ? "" : "bg-primary-100 drop-shadow";
+
+  const handleSignInClick = () => {
+    setIsModalOpen(true);
+  };
+
+  const handleLogoutClick = async () => {
+    const refresh_token = localStorage.getItem("refresh_token");
+    const access_token = localStorage.getItem("access_token");
+    try {
+      const response = await fetch("http://localhost:8000/auth/logout", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${access_token}`,
+        },
+        body: JSON.stringify({ refreshToken: refresh_token }),
+      });
+
+      if (response.ok) {
+        localStorage.removeItem("access_token");
+        localStorage.removeItem("refresh_token");
+        setIsUserSignedIn(false);
+        console.log("Logout clicked");
+      } else {
+        const errorData = await response.json();
+        console.error("Sign In Error:", errorData.message);
+      }
+    } catch (error) {
+      console.error("Sign In Error:", error);
+    }
+  };
 
   return (
     <nav>
@@ -55,7 +97,21 @@ const Navbar = ({ isTopOfPage, selectedPage, setSelectedPage }: Props) => {
                 </div>
 
                 <div className={`${flexBetween} gap-8`}>
-                  <p>Sign In</p>
+                  {isUserSignedIn ? (
+                    <button
+                      className="bg-red-500 text-white py-2 px-4 rounded hover:bg-red-600"
+                      onClick={handleLogoutClick}
+                    >
+                      Logout
+                    </button>
+                  ) : (
+                    <button
+                      className="py-2 px-4 rounded hover:bg-primary-500 hover:text-gray-500"
+                      onClick={handleSignInClick}
+                    >
+                      Sign In
+                    </button>
+                  )}
                   <ActionButton setSelectedPage={setSelectedPage}>
                     Become a Member
                   </ActionButton>
@@ -108,6 +164,13 @@ const Navbar = ({ isTopOfPage, selectedPage, setSelectedPage }: Props) => {
           </div>
         </div>
       )}
+
+      <Modal isOpen={isModalOpen} onClose={setIsModalOpen}>
+        <SignIn
+          onClose={setIsModalOpen}
+          setIsUserSignedIn={setIsUserSignedIn}
+        />
+      </Modal>
     </nav>
   );
 };

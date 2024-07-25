@@ -9,9 +9,10 @@ import { SelectedPage } from "@/shared/types";
 
 function App() {
   const [selectedPage, setSelectedPage] = useState<SelectedPage>(
-    SelectedPage.Home,
+    SelectedPage.Home
   );
   const [isTopOfPage, setIsTopOfPage] = useState<boolean>(true);
+  const [isUserSignedIn, setIsUserSignedIn] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -26,6 +27,11 @@ function App() {
 
       return () => window.removeEventListener("scroll", handleScroll);
     };
+
+    const token = localStorage.getItem("access_token");
+    if (token) {
+      setIsUserSignedIn(true);
+    }
   }, []);
 
   return (
@@ -34,6 +40,8 @@ function App() {
         isTopOfPage={isTopOfPage}
         selectedPage={selectedPage}
         setSelectedPage={setSelectedPage}
+        isUserSignedIn={isUserSignedIn}
+        setIsUserSignedIn={setIsUserSignedIn}
       />
       <Home setSelectedPage={setSelectedPage} />
       <Benefits setSelectedPage={setSelectedPage} />
