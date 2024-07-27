@@ -1,4 +1,6 @@
 import { useState } from "react";
+import { API_BASE_URL, API_ENDPOINTS } from "@/api/apiConfig";
+import { handleUnauthorized } from "@/api/handlers";
 
 type Props = {
   setIsUserSignedIn: (value: boolean) => void;
@@ -13,10 +15,11 @@ const SignInSignUp = ({ setIsUserSignedIn, onClose }: Props) => {
   const [username, setUserName] = useState("");
   const [first_name, setFirstname] = useState("");
   const [last_name, setLastName] = useState("");
+  const [apiErrors, setApiErrors] = useState("");
 
   const handleSignIn = async () => {
     try {
-      const response = await fetch("http://localhost:8000/auth/login", {
+      const response = await fetch(`${API_BASE_URL}/${API_ENDPOINTS.LOGIN}`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -31,8 +34,26 @@ const SignInSignUp = ({ setIsUserSignedIn, onClose }: Props) => {
         setIsUserSignedIn(true);
         onClose(false);
       } else {
-        const errorData = await response.json();
-        console.error("Sign In Error:", errorData.message);
+        switch (response.status) {
+          case 401:
+            handleUnauthorized({
+              onSuccess: handleSignIn,
+              onFailure: (error) => {
+                console.error("Unauthorized Error:", error);
+              },
+            });
+            break;
+          case 403:
+            console.error(
+              "Sign In Error: Forbidden. You might not have the necessary permissions."
+            );
+            break;
+          default:
+            const errorData = await response.json();
+            setApiErrors(errorData.non_field_errors[0]);
+            console.error("Sign In Error:", errorData.message);
+            break;
+        }
       }
     } catch (error) {
       console.error("Sign In Error:", error);
@@ -50,7 +71,7 @@ const SignInSignUp = ({ setIsUserSignedIn, onClose }: Props) => {
       })
     );
     try {
-      const response = await fetch("http://localhost:8000/auth/signup", {
+      const response = await fetch(`${API_BASE_URL}/${API_ENDPOINTS.SIGNUP}`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -82,6 +103,11 @@ const SignInSignUp = ({ setIsUserSignedIn, onClose }: Props) => {
           {isSignIn ? "Sign In" : "Sign Up"}
         </h2>
         <form className="space-y-4" onSubmit={(e) => e.preventDefault()}>
+          {apiErrors ? (
+            <p className="mt-1 text-primary-500">{apiErrors}</p>
+          ) : (
+            <></>
+          )}
           <div>
             <label className="block mb-1" htmlFor="username">
               Name
@@ -154,6 +180,7 @@ const SignInSignUp = ({ setIsUserSignedIn, onClose }: Props) => {
               onChange={(e) => setPassword(e.target.value)}
             />
           </div>
+
           {isSignIn ? (
             <button
               type="button"

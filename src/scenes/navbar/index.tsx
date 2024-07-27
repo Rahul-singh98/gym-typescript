@@ -7,6 +7,8 @@ import { useState } from "react";
 import ActionButton from "@/shared/ActionButton";
 import Modal from "./Modal";
 import SignIn from "./SignIn";
+import { API_BASE_URL, API_ENDPOINTS } from "@/api/apiConfig";
+import { handleUnauthorized } from "@/api/handlers";
 
 type Props = {
   isTopOfPage: boolean;
@@ -37,11 +39,11 @@ const Navbar = ({
     const refresh_token = localStorage.getItem("refresh_token");
     const access_token = localStorage.getItem("access_token");
     try {
-      const response = await fetch("http://localhost:8000/auth/logout", {
+      const response = await fetch(`${API_BASE_URL}/${API_ENDPOINTS.LOGOUT}`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          "Authorization": `Bearer ${access_token}`,
+          Authorization: `Bearer ${access_token}`,
         },
         body: JSON.stringify({ refreshToken: refresh_token }),
       });
@@ -52,11 +54,29 @@ const Navbar = ({
         setIsUserSignedIn(false);
         console.log("Logout clicked");
       } else {
-        const errorData = await response.json();
-        console.error("Sign In Error:", errorData.message);
+        switch (response.status) {
+          case 401:
+            handleUnauthorized({
+              onSuccess: handleLogoutClick,
+              onFailure: (error) => {
+                console.error("Unauthorized Error:", error);
+                setIsUserSignedIn(false);
+              },
+            });
+            break;
+          case 403:
+            console.error(
+              "Sign Out Error: Forbidden. You might not have the necessary permissions."
+            );
+            break;
+          default:
+            const errorData = await response.json();
+            console.error("Sign Out Error:", errorData.message);
+            break;
+        }
       }
     } catch (error) {
-      console.error("Sign In Error:", error);
+      console.error("Sign Out Error:", error);
     }
   };
 
@@ -105,16 +125,18 @@ const Navbar = ({
                       Logout
                     </button>
                   ) : (
-                    <button
-                      className="py-2 px-4 rounded hover:bg-primary-500 hover:text-gray-500"
-                      onClick={handleSignInClick}
-                    >
-                      Sign In
-                    </button>
+                    <>
+                      <button
+                        className="py-2 px-4 rounded hover:bg-primary-500 hover:text-gray-500"
+                        onClick={handleSignInClick}
+                      >
+                        Sign In
+                      </button>
+                      <ActionButton setSelectedPage={setSelectedPage}>
+                        Become a Member
+                      </ActionButton>
+                    </>
                   )}
-                  <ActionButton setSelectedPage={setSelectedPage}>
-                    Become a Member
-                  </ActionButton>
                 </div>
               </div>
             ) : (

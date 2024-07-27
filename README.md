@@ -86,7 +86,17 @@ The project includes a minimal ESLint setup with some recommended rules. To expa
 
 This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
 
-```
+### Screen Shots
 
-Feel free to customize this draft as per your project's specific details and add any additional information or images as needed.
-```
+**Home Page**
+![Home Page](./readme_resources/images/header.png)
+
+**Benefits Page**
+![Benefits Page](./readme_resources/images/benefits.png)
+
+**Our Classes Page**
+![Our Classes Page](./readme_resources/images/ourClasses.png)
+
+#### Complete Demo with Signin/Signout
+
+[![Video Demonstration](./readme_resources/images/header.png)](./readme_resources/videos/evo_gym_demonstration.webm)
