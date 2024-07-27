@@ -89,14 +89,14 @@ This project is licensed under the MIT License. See the [LICENSE](LICENSE) file 
 ### Screen Shots
 
 **Home Page**
-![Home Page](https://github.com/rahul-singh98/gym-typescript/tree/main/readme_resources/images/header.png)
+![Home Page](readme_resources/images/header.png)
 
 **Benefits Page**
-![Benefits Page](https://github.com/rahul-singh98/gym-typescript/tree/main/readme_resources/images/benefits.png)
+![Benefits Page](readme_resources/images/benefits.png)
 
 **Our Classes Page**
-![Our Classes Page](https://github.com/rahul-singh98/gym-typescript/tree/main/readme_resources/images/ourClasses.png)
+![Our Classes Page](readme_resources/images/ourClasses.png)
 
 #### Complete Demo with Signin/Signout
 
-[![Video Demonstration](https://github.com/Rahul-singh98/gym-typescript/blob/main/readme_resources/images/header.png)](https://github.com/Rahul-singh98/gym-typescript/blob/main/readme_resources/videos/evo_gym_demonstration.webm)
+[![Video Demonstration](readme_resources/images/header.png)](readme_resources/videos/evo_gym_demonstration.webm)
