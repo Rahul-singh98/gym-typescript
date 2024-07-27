@@ -99,4 +99,4 @@ This project is licensed under the MIT License. See the [LICENSE](LICENSE) file 
 
 #### Complete Demo with Signin/Signout
 
-[![Video Demonstration](readme_resources/images/header.png)](readme_resources/videos/evo_gym_demonstration.webm)
+![Vide Demonstration](readme_resources/videos/evo_gym_demonstration.gif)
